@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroservicesChassis.Loggin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroservicesChassis.Common", "MicroservicesChassis.Common\MicroservicesChassis.Common.csproj", "{BC3CD38D-8DA1-4F1D-A047-4D14680DD60E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroservicesChassis.ApiDocumentation", "MicroservicesChassis.ApiDocumentation\MicroservicesChassis.ApiDocumentation.csproj", "{2A4F73BF-050F-4F62-A533-28769B5EF32E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{BC3CD38D-8DA1-4F1D-A047-4D14680DD60E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC3CD38D-8DA1-4F1D-A047-4D14680DD60E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC3CD38D-8DA1-4F1D-A047-4D14680DD60E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A4F73BF-050F-4F62-A533-28769B5EF32E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A4F73BF-050F-4F62-A533-28769B5EF32E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A4F73BF-050F-4F62-A533-28769B5EF32E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A4F73BF-050F-4F62-A533-28769B5EF32E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

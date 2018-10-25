@@ -1,4 +1,5 @@
 ﻿using Consul;
+using MicroservicesChassis.ApiDocumentation;
 using MicroservicesChassis.Logging;
 using MicroservicesChassis.ServiceDiscovery;
 using Microsoft.AspNetCore.Builder;
@@ -22,6 +23,7 @@ namespace MicroservicesChassis.Playground
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddConsul();
+            services.AddSwagger();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -30,6 +32,7 @@ namespace MicroservicesChassis.Playground
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime)
         {
             app.UseConsul(applicationLifetime);
+            app.UseSwagger();
 
             app.UseMvc();
         }
