@@ -7,11 +7,11 @@ namespace MicroservicesChassis.Playground.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ConsulRegistryController : ControllerBase
+    public class ServiceDiscoveryController : ControllerBase
     {
         private readonly IConsulServicesRegistry _registry;
 
-        public ConsulRegistryController(IConsulServicesRegistry registry)
+        public ServiceDiscoveryController(IConsulServicesRegistry registry)
         {
             _registry = registry;
         }

@@ -37,7 +37,7 @@ namespace MicroservicesChassis.Logging
             if (!Enum.TryParse<LogEventLevel>(loggingTarget.Level, true, out var level))
                 level = LogEventLevel.Information;
 
-            loggerConfiguration.WriteTo.Logger(l => l.Filter.ByIncludingOnly(x => x.Level == level).WriteTo.Console());
+            loggerConfiguration.WriteTo.Logger(l => l.MinimumLevel.Is(level).WriteTo.Console());
         }
 
         private static void ConfigureFileOutput(LoggerConfiguration loggerConfiguration, LoggingTarget loggingTarget)
@@ -48,7 +48,7 @@ namespace MicroservicesChassis.Logging
             if (!Enum.TryParse<LogEventLevel>(loggingTarget.Level, true, out var level))
                 level = LogEventLevel.Debug;
 
-            loggerConfiguration.WriteTo.Logger(l => l.Filter.ByIncludingOnly(x => x.Level == level).WriteTo.File(@"Logs\logs.txt", rollingInterval: RollingInterval.Day));
+            loggerConfiguration.WriteTo.Logger(l => l.MinimumLevel.Is(level).WriteTo.File(@"Logs\logs.txt", rollingInterval: RollingInterval.Day));
         }
     }
 }
