@@ -1,5 +1,6 @@
 ﻿using System;
 using Consul;
+using MicroservicesChassis.Common;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -20,11 +21,10 @@ namespace MicroservicesChassis.ServiceDiscovery
                config = serviceProvider.GetService<IConfiguration>();
             }
 
-            var consulOptsSection = config.GetSection(SectionName);
-            services.Configure<ConsulOptions>(consulOptsSection);
+            services.Configure<ConsulOptions>(config.GetSection(SectionName));
             services.AddTransient<IConsulServicesRegistry, ConsulServicesRegistry>();
 
-            var options = consulOptsSection.Get<ConsulOptions>();
+            var options = config.GetOptions<ConsulOptions>(SectionName);
             services.AddSingleton<IConsulClient>(c => new ConsulClient(cfg =>
             {
                 if (!string.IsNullOrEmpty(options.Url))

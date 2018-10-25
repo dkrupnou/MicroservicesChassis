@@ -1,4 +1,5 @@
 ﻿using System;
+using MicroservicesChassis.Common;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Serilog;
@@ -10,16 +11,18 @@ namespace MicroservicesChassis.Logging
     {
         private static readonly string SectionName = "serilog";
 
-        public static IWebHostBuilder UseLogging(this IWebHostBuilder webHostBuilder, string applicationName)
+        public static IWebHostBuilder UseLogging(this IWebHostBuilder webHostBuilder, string applicationName = null)
         {
             webHostBuilder.UseSerilog((context, loggerConfiguration) =>
             {
+                var appIdentityOptions = context.Configuration.GetAppIdentityOptions();
+                var appName = applicationName ?? appIdentityOptions.Name;
                 loggerConfiguration.Enrich.FromLogContext()
                     .MinimumLevel.Verbose()
                     .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName)
-                    .Enrich.WithProperty("ApplicationName", applicationName);
+                    .Enrich.WithProperty("ApplicationName", appName);
 
-                var serilogOptions = context.Configuration.GetSection(SectionName).Get<SerilogOptions>();
+                var serilogOptions = context.Configuration.GetOptions<SerilogOptions>(SectionName);
                 ConfigureConsoleOutput(loggerConfiguration, serilogOptions.Console);
                 ConfigureFileOutput(loggerConfiguration, serilogOptions.File);
             });

@@ -13,4 +13,8 @@
     <PackageReference Include="Serilog.Sinks.File" Version="4.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MicroservicesChassis.Common\MicroservicesChassis.Common.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -14,6 +14,6 @@ namespace MicroservicesChassis.Playground
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseLogging("playground-app");
+                .UseLogging();
     }
 }

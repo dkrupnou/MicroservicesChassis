@@ -10,19 +10,11 @@ namespace MicroservicesChassis.Playground.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
-    {
-        private readonly IConsulServicesRegistry _registry;
-
-        public ValuesController(IConsulServicesRegistry registry)
-        {
-            _registry = registry;
-        }
-
+    { 
         // GET api/values
         [HttpGet]
         public async Task<IEnumerable<string>> Get()
         {
-            var playground = await _registry.GetAsync("playgroud");
             return new string[] { "value1", "value2" };
         }
 
