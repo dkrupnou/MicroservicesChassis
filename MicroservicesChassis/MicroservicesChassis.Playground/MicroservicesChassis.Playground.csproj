@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MicroservicesChassis.Logging\MicroservicesChassis.Logging.csproj" />
     <ProjectReference Include="..\MicroservicesChassis.ServiceDiscovery\MicroservicesChassis.ServiceDiscovery.csproj" />
   </ItemGroup>
 

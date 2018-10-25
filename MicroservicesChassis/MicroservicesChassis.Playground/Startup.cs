@@ -1,4 +1,5 @@
 ﻿using Consul;
+using MicroservicesChassis.Logging;
 using MicroservicesChassis.ServiceDiscovery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
