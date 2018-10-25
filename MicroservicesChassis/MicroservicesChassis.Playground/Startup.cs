@@ -29,9 +29,9 @@ namespace MicroservicesChassis.Playground
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseConsul(applicationLifetime);
+            app.UseConsul();
             app.UseSwagger();
 
             app.UseMvc();

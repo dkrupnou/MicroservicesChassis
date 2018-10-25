@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using Consul;
 using MicroservicesChassis.Common;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -34,7 +36,7 @@ namespace MicroservicesChassis.ServiceDiscovery
             return services;
         }
 
-        public static void UseConsul(this IApplicationBuilder app, IApplicationLifetime appLifetime)
+        public static void UseConsul(this IApplicationBuilder app)
         {
             using (var scope = app.ApplicationServices.CreateScope())
             {
@@ -43,19 +45,7 @@ namespace MicroservicesChassis.ServiceDiscovery
                 if (!enabled)
                     return;
 
-                var uniqueId = Guid.NewGuid().ToString("N");
-                var serviceIdentity = options.ServiceIdentity;
-                var serviceName = serviceIdentity.Name;
-                var serviceId = $"{serviceName}:{uniqueId}";
-                var address = serviceIdentity.Address;
-                var port = serviceIdentity.Port;
-                var registration = new AgentServiceRegistration
-                {
-                    Name = serviceName,
-                    ID = serviceId,
-                    Address = address,
-                    Port = port,
-                };
+                var registration = CreateRegistration(options.ServiceIdentity);
 
                 if (options.PingEnabled)
                 {
@@ -67,7 +57,7 @@ namespace MicroservicesChassis.ServiceDiscovery
                     {
                         Interval = TimeSpan.FromSeconds(pingInterval),
                         DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(removeAfterInterval),
-                        HTTP = $"{address}{(port > 0 ? $":{port}" : string.Empty)}/{pingEndpoint}"
+                        HTTP = $"{registration.Address}{(registration.Port > 0 ? $":{registration.Port}" : string.Empty)}/{pingEndpoint}"
                     };
 
                     registration.Checks = new[] { check };
@@ -75,11 +65,28 @@ namespace MicroservicesChassis.ServiceDiscovery
 
                 var consulClient = scope.ServiceProvider.GetService<IConsulClient>();
                 consulClient.Agent.ServiceRegister(registration);
+
+                var appLifetime = scope.ServiceProvider.GetService<IApplicationLifetime>();
                 appLifetime.ApplicationStopped.Register(() =>
                 {
-                    consulClient.Agent.ServiceDeregister(serviceId);
+                    consulClient.Agent.ServiceDeregister(registration.ID);
                 });
             }
+        }
+
+        private static AgentServiceRegistration CreateRegistration(ServiceIdentity identity)
+        {
+            var uniqueId = Guid.NewGuid().ToString("N");
+            var serviceName = identity.Name;
+            var serviceId = $"{serviceName}:{uniqueId}";
+
+            return new AgentServiceRegistration
+            {
+                ID = serviceId,
+                Name = serviceName,
+                Address = identity.Address,
+                Port = identity.Port
+            };
         }
     }
 }
