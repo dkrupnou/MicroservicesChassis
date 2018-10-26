@@ -25,6 +25,8 @@ namespace MicroservicesChassis.ServiceDiscovery
 
             services.Configure<ConsulOptions>(config.GetSection(SectionName));
             services.AddTransient<IConsulServicesRegistry, ConsulServicesRegistry>();
+            services.AddTransient<ConsulServiceDiscoveryMessageHandler>();
+            services.AddHttpClient<IConsulHttpClient, ConsulHttpClient>().AddHttpMessageHandler<ConsulServiceDiscoveryMessageHandler>();
 
             var options = config.GetOptions<ConsulOptions>(SectionName);
             services.AddSingleton<IConsulClient>(c => new ConsulClient(cfg =>
