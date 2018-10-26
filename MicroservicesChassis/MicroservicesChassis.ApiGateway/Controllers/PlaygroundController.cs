@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MicroservicesChassis.ApiGateway.Clients.Playground;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,9 +17,10 @@ namespace MicroservicesChassis.ApiGateway.Controllers
 
         // GET api/values
         [HttpGet]
-        public async Task<IEnumerable<string>> Get()
+        public async Task<IActionResult> Get()
         {
-            return await _playgroundClient.GetAsync();
+            var result = await _playgroundClient.GetValuesAsync();
+            return Ok(result);
         }
     }
 }
