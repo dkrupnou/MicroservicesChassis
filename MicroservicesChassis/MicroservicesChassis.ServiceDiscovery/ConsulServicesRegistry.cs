@@ -29,7 +29,7 @@ namespace MicroservicesChassis.ServiceDiscovery
 
         private AgentService PickServiceInstance(IList<AgentService> services)
         {
-            var randomSelector = _rand.Next(0, services.Count - 1);
+            var randomSelector = _rand.Next(0, services.Count);
             return services[randomSelector];
         }
 

@@ -38,6 +38,9 @@ namespace MicroservicesChassis.ServiceDiscovery
 
         public static void UseConsul(this IApplicationBuilder app)
         {
+            var srvFeature = app.ServerFeatures.Get<IServerAddressesFeature>();
+            var addr = srvFeature.Addresses.First();
+
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 var options = scope.ServiceProvider.GetService<IOptions<ConsulOptions>>().Value;
@@ -45,7 +48,7 @@ namespace MicroservicesChassis.ServiceDiscovery
                 if (!enabled)
                     return;
 
-                var registration = CreateRegistration(options.ServiceIdentity);
+                var registration = CreateRegistration(options.ServiceName, addr);
 
                 if (options.PingEnabled)
                 {
@@ -74,18 +77,18 @@ namespace MicroservicesChassis.ServiceDiscovery
             }
         }
 
-        private static AgentServiceRegistration CreateRegistration(ServiceIdentity identity)
+        private static AgentServiceRegistration CreateRegistration(string serviceName, string addr)
         {
+            var uri = new Uri(addr);
             var uniqueId = Guid.NewGuid().ToString("N");
-            var serviceName = identity.Name;
             var serviceId = $"{serviceName}:{uniqueId}";
 
             return new AgentServiceRegistration
             {
                 ID = serviceId,
                 Name = serviceName,
-                Address = identity.Address,
-                Port = identity.Port
+                Address = string.Format("{0}://{1}", uri.Scheme, uri.Host),
+                Port = uri.Port
             };
         }
     }
